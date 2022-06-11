@@ -9,7 +9,7 @@ export default function Testmonials() {
     return (
         <>
             <div className="row" style={{ padding: '0px' }}>
-                <div className="col-8" style={{ backgroundColor: '', height: '100vh' }}>
+            <div className="col-8" style={{  height: '100vh', borderRight:'3px solid black' }}>
 
                     <form style={{
                         backgroundColor: 'white',

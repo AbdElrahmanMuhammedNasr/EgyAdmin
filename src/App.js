@@ -14,7 +14,7 @@ function App() {
     <div className="App" style={{ height: '100vh', backgroundColor: 'red', overflow: 'hidden' }}>
       <NavBar />
       <div className='row' style={{ height: '100vh', backgroundColor: 'whitesmoke' }} >
-        <div className='col-2'>
+        <div className='col-2' style={{backgroundColor:'green',paddingRight:'0px'}}>
           <Side />
         </div>
         <div className='col-10'>
