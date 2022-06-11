@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import Side from './UI/side';
+import NavBar from './UI/nav';
+import Sliders from './Components/sliders';
+import About from './Components/about';
+import BestOffer from './Components/bestOffer';
+import Services from './Components/service';
+import Projects from './Components/project';
+import Testmonials from './Components/testmonalis';
+import Partner from './Components/partner';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={{ height: '100vh', backgroundColor: 'red', overflow: 'hidden' }}>
+      <NavBar />
+      <div className='row' style={{ height: '100vh', backgroundColor: 'whitesmoke' }} >
+        <div className='col-2'>
+          <Side />
+        </div>
+        <div className='col-10'>
+          <Routes>
+
+            <Route
+              path="/"
+              element={<Navigate to="/slider" replace />}
+            />
+            <Route path='/slider' element={<Sliders />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/offer' element={<BestOffer />} />
+            <Route path='/service' element={<Services />} />
+            <Route path='/project' element={<Projects />} />
+            <Route path='/testmonials' element={<Testmonials />} />
+            <Route path='/partner' element={<Partner />} />
+
+          </Routes>
+
+      
+        </div>
+
+      </div>
+
     </div>
   );
 }
