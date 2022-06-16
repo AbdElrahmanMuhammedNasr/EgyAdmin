@@ -14,10 +14,10 @@ function App() {
     <div className="App" style={{ height: '100vh', backgroundColor: 'red', overflow: 'hidden' }}>
       <NavBar />
       <div className='row' style={{ height: '100vh', backgroundColor: 'whitesmoke' }} >
-        <div className='col-2' style={{backgroundColor:'green',paddingRight:'0px'}}>
+        <div className='col-2 d-none d-md-block' style={{ backgroundColor: 'green', paddingRight: '0px' }}>
           <Side />
         </div>
-        <div className='col-10'>
+        <div className='col-sm-12 col-md-10'>
           <Routes>
 
             <Route
@@ -34,7 +34,7 @@ function App() {
 
           </Routes>
 
-      
+
         </div>
 
       </div>

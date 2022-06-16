@@ -89,7 +89,7 @@ export default function Partner() {
 
     return (
             <div className="row" style={{ padding: '0px' }}>
-                <div className="col-8" style={{ height: '100vh', borderRight: '3px solid black' }}>
+                <div className=" col-lg-8 col-md-12" style={{ height: '100vh', borderRight: '3px solid black' }}>
 
                     <br />
                     <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
@@ -127,7 +127,7 @@ export default function Partner() {
                     </div>
 
                 </div>
-                <div className="col-4" style={{ backgroundColor: '', height: '97vh', overflow: 'scroll' }}>
+                <div className="col-4 d-none d-md-block" style={{ backgroundColor: '', height: '97vh', overflow: 'scroll' }}>
                     {
                         partner.map((e) => {
                             return (
