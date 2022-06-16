@@ -5,7 +5,7 @@ export default function NavBar() {
     return (
         <>
          <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-             <a className="navbar-brand ps-3" href="index.html">EgyProSoft Admin</a>
+             <a className="navbar-brand ps-3" style={{color:'white'}}>EgyProSoft Admin</a>
 
 
             <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">

@@ -6,7 +6,7 @@ export default function Side() {
     const [pages, setPages] = useState([
         { name: 'Slider', link: '/slider', },
         { name: 'About', link: '/about', },
-        { name: 'Best Offer', link: '/offer', },
+        { name: 'Offer', link: '/offer', },
         { name: 'Services', link: '/service', },
         { name: 'Project', link: '/project', },
         { name: 'Testmonials', link: '/testmonials', },

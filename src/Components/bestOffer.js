@@ -1,16 +1,118 @@
-import React from "react";
-export default function BestOffer() {
-    const [offer, setOffer] = React.useState([
-        { title: 'offer one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-        { title: 'offer one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-        { title: 'offer one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-        { title: 'offer one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-    ]);
-    return (
-        <>
-            <div className="row" style={{ padding: '0px' }}>
-            <div className="col-8" style={{  height: '100vh', borderRight:'3px solid black' }}>
+import React, { useEffect } from "react";
+import img from '../assets/1.jpg';
+import axios from 'axios';
+import uuid from "react-uuid";
 
+export default function BestOffer() {
+    const url = axios.defaults.baseURL;
+
+    const [offer, setOffer] = React.useState([]);
+
+    //  get offers
+    useEffect(() => {
+        axios.get('offer/get-offers')
+            .then(res => {
+                if (res.status == 200) {
+                    setOffer(res.data);
+                    // console.log(res.data);
+
+                }
+            }).catch(e => {
+                setSuccess(false)
+            })
+
+    }, [])
+
+    // 
+
+    const [images, setImages] = React.useState([]);
+    const [title, setTitle] = React.useState(null);
+    const [subtitle, setSubtile] = React.useState(null);
+    const [oldPrice, setOldPrice] = React.useState(null);
+    const [newPrice, setNewPrice] = React.useState(null);
+    const [exDate, setExDate] = React.useState(null);
+
+
+    const [success, setSuccess] = React.useState(null);
+
+    const addNewOffer = (event) => {
+
+        event.preventDefault();
+        console.log({ images, title, subtitle, oldPrice, newPrice, exDate })
+
+        axios.post('offer/add-offer', { images, title, subtitle, oldPrice, newPrice, exDate })
+            .then(res => {
+                if (res.status == 200) {
+                    setSuccess(true)
+                    setOffer([...offer, res.data]);
+                }
+            })
+
+    }
+
+    const getimage = (event) => {
+        const file = event.target.files
+
+        for (let i = 0; i < file.length; i++) {
+            let formData = new FormData();
+            formData.append("picture", file[i]);
+
+            axios.post('upload/image', formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }).then((response) => {
+                // console.log(response.data);
+                images.push(response.data)
+                // console.log(images);
+
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+
+
+
+    }
+    const onDelete = (event, id) => {
+        event.preventDefault();
+        console.log(id)
+
+        axios.delete('offer/delete-offer/' + id)
+            .then(res => {
+                if (res.status == 200) {
+                    setOffer([...offer.filter(s => s._id != id)]);
+                }
+            })
+    }
+
+    const successFun = () => {
+        if (success == null) {
+            return null;
+        }
+        else if (success == true)
+            return (
+                <div class="alert alert-success" role="alert">
+                    Success to add new offer
+                </div>)
+        else if (success == false) (
+            <div class="alert alert-danger" role="alert">
+                Fail to add new offer
+            </div>)
+
+    }
+
+    return (
+            <div className="row" style={{ padding: '0px' }}>
+                <div className="col-8" style={{ height: '100vh', borderRight: '3px solid black' }}>
+                    <br />
+                    <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+                    <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Offers </i>
+                    <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+
+                    {
+                        successFun()
+                    }
                     <form style={{
                         backgroundColor: 'white',
                         padding: '5%',
@@ -18,21 +120,21 @@ export default function BestOffer() {
                         marginTop: '4vh'
                     }}>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="customFile" multiple />
+                            <input type="file" class="custom-file-input" multiple onChange={(event) => getimage(event)} />
                         </div>
 
                         <br />
 
                         <div className="form-group">
-                            <label for="exampleInputEmail1">Offer Name</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp" />
+                            <label for="exampleInputEmail1">Offer Title</label>
+                            <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setTitle(event.target.value)} />
                         </div>
                         <br />
 
 
                         <div class="form-group">
-                            <label for="validationTextarea">Details</label>
-                            <textarea class="form-control " id="validationTextarea" placeholder="" required style={{ minHeight: '150px', maxHeight: '150px' }}></textarea>
+                            <label for="validationTextarea">Offer Subtitle</label>
+                            <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtile(event.target.value)} ></textarea>
                         </div>
 
                         <br />
@@ -42,22 +144,22 @@ export default function BestOffer() {
                             <div class="col">
                                 <label >Old Price</label>
 
-                                <input type="text" class="form-control" placeholder="" />
+                                <input type="text" class="form-control" onChange={(event) => setOldPrice(event.target.value)} />
                             </div>
                             <div class="col">
                                 <label >New Price</label>
-                                <input type="text" class="form-control" placeholder="" />
+                                <input type="text" class="form-control" onChange={(event) => setNewPrice(event.target.value)} />
                             </div>
                         </div>
                         <br />
 
                         <div class="form-group">
                             <label for="validationTextarea"> Expire Date</label>
-                            <input type="date" class="form-control" id="date" name="date" />
+                            <input type="date" class="form-control" id="date" name="date" onChange={(event) => setExDate(event.target.value)} />
                         </div>
 
                         <br />
-                        <button type="submit" className="btn btn-primary ">Add new offer</button>
+                        <button type="submit" className="btn btn-primary" onClick={(event) => addNewOffer(event)}>Add new offer</button>
                     </form>
 
                 </div>
@@ -69,11 +171,39 @@ export default function BestOffer() {
                                     <div className="card" style={{ margin: '10px' }}>
                                         <h5 className="card-header">{e.title}</h5>
                                         <div className="card-body">
-                                            <img src={e.image} class="card-img-top" style={{ height: '200px', borderRadius: '5%', margin: '10px' }} />
+                                            <img src={url + e.images[0]} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
 
-                                            {/* <h5 className="card-title">{e.title}</h5> */}
-                                            <p className="card-text">{e.subtitle}</p>
-                                            <a href="#" className="btn btn-outline-danger">Delete</a>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p className="card-text">
+                                                        <p className="card-text">{e.subtitle}</p>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+
+                                            <br />
+
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p className="card-text">
+                                                        <p className="card-text">Offer Expire Date: <span style={{ color: 'red' }}>{e.exDate.split('T')[0]} </span></p>
+                                                    </p>
+
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <p className="card-text">
+                                                        <p className="card-text">
+                                                            <p className="card-text">Old price: <span style={{ color: 'red' }}>{e.oldPrice} EGP</span> to New Price:<span style={{ color: 'red' }}>{e.newPrice} EGP</span> </p>
+                                                        </p>
+                                                    </p>
+
+                                                </div>
+                                            </div>
+
+                                            <br />
+                                            <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
                                         </div>
                                     </div>
 
@@ -85,6 +215,5 @@ export default function BestOffer() {
                 </div>
 
             </div>
-        </>
     );
 }

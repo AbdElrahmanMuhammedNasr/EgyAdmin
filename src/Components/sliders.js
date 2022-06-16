@@ -1,16 +1,116 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Slider } from "../model/Slider";
+import axios from 'axios';
+import uuid from "react-uuid";
+
 
 export default function Sliders() {
-    const [slider, setSlider] = React.useState([
-        { title: 'Mobile app', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-        { title: 'web app', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-        { title: 'desktop', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-        { title: 'fire sys', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', subtitle: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure natus temporibus ea, aut ipsa, blanditiis voluptates nisi quo, nulla,' },
-    ]);
+    const url = axios.defaults.baseURL;
+
+    const [slider, setSlider] = React.useState([]);
+
+   //  get sliders
+   useEffect(() => {
+    axios.get('slider/get-sliders')
+        .then(res => {
+            if (res.status == 200) {
+                setSlider(res.data);
+            }
+        }).catch(e => {
+            setSuccess(false)
+        })
+
+}, [])
+
+// 
+
+    const [image, setImage] = React.useState(null);
+    const [title, setTitle] = React.useState(null);
+    const [subtitle, setSubtitle] = React.useState(null);
+    const [success, setSuccess] = React.useState(null);
+
+ 
+
+    const onAddNewSlider = (event) => {
+        event.preventDefault();
+        const newSlider = new Slider({ title, image, subtitle })
+
+        axios.post('slider/add-slider', newSlider)
+            .then(res => {
+                if (res.status == 200) {
+                    setSuccess(true)
+                    setSlider([...slider, newSlider]);
+                }
+            })
+
+        // console.log({ image, title, subtitle })
+    }
+    const onDelete = (event, id) => {
+        event.preventDefault();
+        console.log(id)
+
+        axios.delete('slider/delete-slider/' + id)
+            .then(res => {
+                if (res.status == 200) {
+                    setSlider([...slider.filter(s => s._id != id)]);
+                }
+            })
+
+    }
+
+    const getimage = (event) => {
+        const file = event.target.files[0]
+        // console.log(file)
+        let formData = new FormData();
+        formData.append("picture", file);
+        axios.post('upload/image', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }).then((response) => {
+            setImage(response.data)
+            // console.log();
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const successFun = () => {
+        if (success == null) {
+            return null;
+        }
+        else if (success == true)
+            return (
+                <div class="alert alert-success" role="alert">
+                    Success to add new slider
+                </div>)
+        else if (success == false) (
+            <div class="alert alert-danger" role="alert">
+                Fail to add new slider
+            </div>)
+
+    }
+
     return (
-        <>
+
             <div className="row" style={{ padding: '0px' }}>
-                <div className="col-8" style={{  height: '100vh', borderRight:'3px solid black' }}>
+
+
+                <div className="col-8" style={{ height: '100vh', borderRight: '3px solid black' }}>
+
+
+                    <br />
+                    <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+                    <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Sliders </i>
+                    <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+
+
+
+                    {
+                        successFun()
+                    }
+
+
 
                     <form style={{
                         backgroundColor: 'white',
@@ -19,48 +119,53 @@ export default function Sliders() {
                         marginTop: '4vh'
                     }}>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="customFile" />
+                            <input type="file" class="custom-file-input" id="customFile" onChange={(event) => getimage(event)} />
                         </div>
 
                         <br />
 
                         <div className="form-group">
                             <label for="exampleInputEmail1">Title</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp" />
+                            <input type="text" class="form-control" onChange={(event) => setTitle(event.target.value)} />
                         </div>
                         <br />
 
 
                         <div class="form-group">
                             <label for="validationTextarea">Subtitle</label>
-                            <textarea class="form-control " id="validationTextarea" placeholder="" required style={{ minHeight: '150px', maxHeight: '150px' }}></textarea>
+                            <textarea class="form-control" required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)}></textarea>
                         </div>
 
 
 
                         <br />
 
-                        <button type="submit" className="btn btn-primary ">Add new slider</button>
+                        <button type="submit" className="btn btn-primary " onClick={onAddNewSlider}>Add new slider</button>
                     </form>
 
                 </div>
-                <div className="col-4" style={{ backgroundColor: '', height: '97vh', overflow: 'scroll' }}>
+                <div className=" col-4 " style={{ backgroundColor: '', height: '97vh', overflow: 'scroll ', margin: '0px', padding: '0px' }}>
                     {
                         slider.map((e) => {
                             return (
-                                <>
-                                    <div className="card" style={{ margin: '10px' }}>
-                                        <h5 className="card-header">{e.title}</h5>
-                                        <div className="card-body">
-                                            <img src={e.image} class="card-img-top" style={{ height: '200px', borderRadius: '5%', margin: '10px' }} />
 
-                                            {/* <h5 className="card-title">{e.title}</h5> */}
+                                <div key={uuid()} className="card " style={{ margin: '10px ' }}>
+                                    <h5 className="card-header">{e.title}</h5>
+
+                                    <div className="card-body ">
+                                        <img src={url + e.image} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
+
+                                        <div class="card">
+                                            <div class="card-body">
                                             <p className="card-text">{e.subtitle}</p>
-                                            <a href="#" className="btn btn-outline-danger">Delete</a>
+                                            </div>
                                         </div>
+                                        <br/>
+                                        <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
                                     </div>
+                                </div>
 
-                                </>
+
                             );
                         })
                     }
@@ -68,6 +173,5 @@ export default function Sliders() {
                 </div>
 
             </div>
-        </>
     );
 }

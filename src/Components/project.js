@@ -1,15 +1,122 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from 'axios';
+import uuid from "react-uuid";
+
+
 export default function Projects() {
-    const [project, setProject] = React.useState([
-        { name: 'project one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', link: 'https://www.google.com/' },
-        { name: 'project one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', link: 'https://www.google.com/' },
-        { name: 'project one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', link: 'https://www.google.com/' },
-        { name: 'project one', image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80', link: 'https://www.google.com/' },
-    ]);
+    const url = axios.defaults.baseURL;
+
+    const [project, setProject] = React.useState([]);
+
+
+
+    //  get projects
+    useEffect(() => {
+        axios.get('project/get-projects')
+            .then(res => {
+                if (res.status == 200) {
+                    setProject(res.data);
+                    console.log(res.data);
+
+                }
+            }).catch(e => {
+                setSuccess(false)
+            })
+
+    }, [])
+
+    // 
+
+    const [images, setImages] = React.useState([]);
+    const [name, setName] = React.useState(null);
+    const [section, setSection] = React.useState(null);
+    const [link, setLink] = React.useState(null);
+
+    const [success, setSuccess] = React.useState(null);
+
+
+
+    const onAddNewproject = (event) => {
+        event.preventDefault();
+
+        axios.post('project/add-project', { images, name, section, link })
+            .then(res => {
+                if (res.status == 200) {
+                    setSuccess(true)
+                    setProject([...project, res.data]);
+                }
+            })
+
+        // console.log({ images, name, section, link })
+    }
+
+
+    const onDelete = (event, id) => {
+        event.preventDefault();
+        console.log(id)
+
+        axios.delete('project/delete-project/' + id)
+            .then(res => {
+                if (res.status == 200) {
+                    setProject([...project.filter(s => s._id != id)]);
+                }
+            })
+    }
+
+    const getimage = (event) => {
+        const file = event.target.files
+
+        for (let i = 0; i < file.length; i++) {
+            let formData = new FormData();
+            formData.append("picture", file[i]);
+
+            axios.post('upload/image', formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }).then((response) => {
+                // console.log(response.data);
+                images.push(response.data)
+                // console.log(images);
+
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+
+
+
+    }
+
+    const successFun = () => {
+        if (success == null) {
+            return null;
+        }
+        else if (success == true)
+            return (
+                <div class="alert alert-success" role="alert">
+                    Success to add new project
+                </div>)
+        else if (success == false) (
+            <div class="alert alert-danger" role="alert">
+                Fail to add new project
+            </div>)
+
+    }
+
     return (
-        <>
             <div className="row" style={{ padding: '0px' }}>
-            <div className="col-8" style={{  height: '100vh', borderRight:'3px solid black' }}>
+                <div className="col-8" style={{ height: '100vh', borderRight: '3px solid black' }}>
+
+
+                    <br />
+                    <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+                    <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Projects </i>
+                    <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+
+                    {
+                        successFun()
+                    }
 
                     <form style={{
                         backgroundColor: 'white',
@@ -18,49 +125,45 @@ export default function Projects() {
                         marginTop: '4vh'
                     }}>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="customFile" multiple />
+                            <input type="file" class="custom-file-input" id="customFile" multiple onChange={(event) => getimage(event)} />
                         </div>
 
                         <br />
 
                         <div className="form-group">
-                            <label for="exampleInputEmail1">project Name</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp" />
+                            <label for="exampleInputEmail1">Project Name</label>
+                            <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} />
                         </div>
                         <br />
 
                         <div class="form-group ">
                             <label for="inputState">Section</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>web</option>
-                                <option>Mobile</option>
-                                <option>cctv</option>
-                                <option>network</option>
+                            <select id="inputState" class="form-control" onChange={(event) => setSection(event.target.value)} >
+                                <option value="null" selected>Choose..</option>
+                                <option value="web" >web</option>
+                                <option value="mobile">Mobile</option>
+                                <option value="network">network</option>
                             </select>
                         </div>
 
                         <br />
 
-                        <label for="basic-url">Project URL</label>
+                        <label for="basic-url">Project Link</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3">https://example.com/</span>
                             </div>
-                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"/>
+                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" onChange={(event) => setLink(event.target.value)} />
                         </div>
 
-                        {/* <div class="form-group">
-                            <label for="validationTextarea">project Details</label>
-                            <textarea class="form-control " id="validationTextarea" placeholder="" required style={{ minHeight: '150px', maxHeight: '150px' }}></textarea>
-                        </div> */}
+
 
                         <br />
 
 
 
 
-                        <button type="submit" className="btn btn-primary ">Add new project</button>
+                        <button type="submit" className="btn btn-primary" onClick={(event) => onAddNewproject(event)}>Add new project</button>
                     </form>
 
                 </div>
@@ -68,21 +171,27 @@ export default function Projects() {
                     {
                         project.map((e) => {
                             return (
-                                <>
-                                    <div className="card" style={{ margin: '10px' }}>
-                                        <h5 className="card-header">{e.name}</h5>
-                                        <div className="card-body">
-                                            <img src={e.image} class="card-img-top" style={{ height: '200px', borderRadius: '5%', margin: '10px' }} />
+                                <div key={uuid()} className="card" style={{ margin: '10px' }}>
+                                    <h5 className="card-header">{e.name} - {e.section}</h5>
+                                    <div className="card-body">
+                                        <img src={url + e.images[0]} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
 
-                                            {/* <h5 className="card-title">{e.title}</h5> */}
-                                            <p className="card-text">
-                                                <a href={e.link}>{e.name}</a>
-                                            </p>
-                                            <a href="#" className="btn btn-outline-danger">Delete</a>
+                                        {/* <h5 className="card-title">{e.title}</h5> */}
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p className="card-text">
+                                                    <a href={e.link}>{e.name}</a>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <br />
 
-                                </>
+
+                                        <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
+                                    </div>
+                                </div>
+
                             );
                         })
                     }
@@ -90,6 +199,5 @@ export default function Projects() {
                 </div>
 
             </div>
-        </>
     );
 }

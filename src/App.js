@@ -25,12 +25,12 @@ function App() {
               element={<Navigate to="/slider" replace />}
             />
             <Route path='/slider' element={<Sliders />} />
-            <Route path='/about' element={<About />} />
             <Route path='/offer' element={<BestOffer />} />
             <Route path='/service' element={<Services />} />
             <Route path='/project' element={<Projects />} />
             <Route path='/testmonials' element={<Testmonials />} />
             <Route path='/partner' element={<Partner />} />
+            <Route path='/about' element={<About />} />
 
           </Routes>
 
