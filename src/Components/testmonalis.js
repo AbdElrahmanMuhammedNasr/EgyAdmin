@@ -36,6 +36,9 @@ export default function Testmonials() {
                     setSuccess(true)
                     // const _id = res.data._id;
                     setTestmonial([...testmonial, res.data]);
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
 

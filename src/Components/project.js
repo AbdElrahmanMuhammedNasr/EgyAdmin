@@ -16,7 +16,6 @@ export default function Projects() {
             .then(res => {
                 if (res.status == 200) {
                     setProject(res.data);
-                    console.log(res.data);
 
                 }
             }).catch(e => {
@@ -44,6 +43,9 @@ export default function Projects() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setProject([...project, res.data]);
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
 

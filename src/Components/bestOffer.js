@@ -45,6 +45,9 @@ export default function BestOffer() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setOffer([...offer, res.data]);
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
 

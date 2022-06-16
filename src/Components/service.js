@@ -39,6 +39,9 @@ export default function Services() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setService([...service, res.data]);
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
     }

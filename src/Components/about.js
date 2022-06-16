@@ -13,6 +13,12 @@ export default function About() {
             .then(res => {
                 if (res.status == 200) {
                     setSuccess(true)
+
+                    // reset form
+                    setTitle('')
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
 

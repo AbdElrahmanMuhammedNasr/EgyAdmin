@@ -9,27 +9,27 @@ export default function Sliders() {
 
     const [slider, setSlider] = React.useState([]);
 
-   //  get sliders
-   useEffect(() => {
-    axios.get('slider/get-sliders')
-        .then(res => {
-            if (res.status == 200) {
-                setSlider(res.data);
-            }
-        }).catch(e => {
-            setSuccess(false)
-        })
+    //  get sliders
+    useEffect(() => {
+        axios.get('slider/get-sliders')
+            .then(res => {
+                if (res.status == 200) {
+                    setSlider(res.data);
+                }
+            }).catch(e => {
+                setSuccess(false)
+            })
 
-}, [])
+    }, [])
 
-// 
+    // 
 
     const [image, setImage] = React.useState(null);
     const [title, setTitle] = React.useState(null);
     const [subtitle, setSubtitle] = React.useState(null);
     const [success, setSuccess] = React.useState(null);
 
- 
+
 
     const onAddNewSlider = (event) => {
         event.preventDefault();
@@ -40,6 +40,13 @@ export default function Sliders() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setSlider([...slider, newSlider]);
+                    // reset form
+                    setImage(null)
+                    setTitle(null)
+                    setSubtitle(null)
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
 
@@ -93,85 +100,85 @@ export default function Sliders() {
 
     return (
 
-            <div className="row" style={{ padding: '0px' }}>
+        <div className="row" style={{ padding: '0px' }}>
 
 
-                <div className="col-8" style={{ height: '100vh', borderRight: '3px solid black' }}>
+            <div className="col-8" style={{ height: '100vh', borderRight: '3px solid black' }}>
+
+
+                <br />
+                <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+                <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Sliders </i>
+                <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+
+
+
+                {
+                    successFun()
+                }
+
+
+
+                <form style={{
+                    backgroundColor: 'white',
+                    padding: '5%',
+                    borderRadius: '13px',
+                    marginTop: '4vh'
+                }}>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" onChange={(event) => getimage(event)} />
+                    </div>
+
+                    <br />
+
+                    <div className="form-group">
+                        <label for="exampleInputEmail1">Title</label>
+                        <input type="text" class="form-control" onChange={(event) => setTitle(event.target.value)} />
+                    </div>
+                    <br />
+
+
+                    <div class="form-group">
+                        <label for="validationTextarea">Subtitle</label>
+                        <textarea class="form-control" required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)}></textarea>
+                    </div>
+
 
 
                     <br />
-                    <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
-                    <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Sliders </i>
-                    <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
 
-
-
-                    {
-                        successFun()
-                    }
-
-
-
-                    <form style={{
-                        backgroundColor: 'white',
-                        padding: '5%',
-                        borderRadius: '13px',
-                        marginTop: '4vh'
-                    }}>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="customFile" onChange={(event) => getimage(event)} />
-                        </div>
-
-                        <br />
-
-                        <div className="form-group">
-                            <label for="exampleInputEmail1">Title</label>
-                            <input type="text" class="form-control" onChange={(event) => setTitle(event.target.value)} />
-                        </div>
-                        <br />
-
-
-                        <div class="form-group">
-                            <label for="validationTextarea">Subtitle</label>
-                            <textarea class="form-control" required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)}></textarea>
-                        </div>
-
-
-
-                        <br />
-
-                        <button type="submit" className="btn btn-primary " onClick={onAddNewSlider}>Add new slider</button>
-                    </form>
-
-                </div>
-                <div className=" col-4 " style={{ backgroundColor: '', height: '97vh', overflow: 'scroll ', margin: '0px', padding: '0px' }}>
-                    {
-                        slider.map((e) => {
-                            return (
-
-                                <div key={uuid()} className="card " style={{ margin: '10px ' }}>
-                                    <h5 className="card-header">{e.title}</h5>
-
-                                    <div className="card-body ">
-                                        <img src={url + e.image} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
-
-                                        <div class="card">
-                                            <div class="card-body">
-                                            <p className="card-text">{e.subtitle}</p>
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
-                                    </div>
-                                </div>
-
-
-                            );
-                        })
-                    }
-
-                </div>
+                    <button type="submit" className="btn btn-primary " onClick={onAddNewSlider}>Add new slider</button>
+                </form>
 
             </div>
+            <div className=" col-4 " style={{ backgroundColor: '', height: '97vh', overflow: 'scroll ', margin: '0px', padding: '0px' }}>
+                {
+                    slider.map((e) => {
+                        return (
+
+                            <div key={uuid()} className="card " style={{ margin: '10px ' }}>
+                                <h5 className="card-header">{e.title}</h5>
+
+                                <div className="card-body ">
+                                    <img src={url + e.image} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p className="card-text">{e.subtitle}</p>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
+                                </div>
+                            </div>
+
+
+                        );
+                    })
+                }
+
+            </div>
+
+        </div>
     );
 }

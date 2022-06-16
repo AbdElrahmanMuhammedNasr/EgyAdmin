@@ -35,6 +35,9 @@ export default function Partner() {
                     setSuccess(true)
                     const _id = res.data._id;
                     setPartner([...partner, { _id, image, name }]);
+                    setInterval(() => {
+                        setSuccess(null)
+                    }, 3000)
                 }
             })
 
