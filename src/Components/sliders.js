@@ -125,11 +125,18 @@ export default function Sliders() {
                     borderRadius: '13px',
                     marginTop: '4vh'
                 }}>
+                    
+
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile" onChange={(event) => getimage(event)} />
+                        <input type="file" class="custom-file-input" id="validatedCustomFile" required onChange={(event) => getimage(event)} />
+                        <label class="custom-file-label" for="validatedCustomFile">Choose file... {image}</label>
+                        <div class="invalid-feedback">Example invalid custom file feedback</div>
                     </div>
 
                     <br />
+                    <br />
+
+                    
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Title</label>

@@ -106,117 +106,123 @@ export default function BestOffer() {
     }
 
     return (
-            <div className="row" style={{ padding: '0px' }}>
-                <div className=" col-lg-8 col-md-12" style={{ height: '100vh', borderRight: '3px solid black' }}>
+        <div className="row" style={{ padding: '0px' }}>
+            <div className=" col-lg-8 col-md-12" style={{ height: '100vh', borderRight: '3px solid black' }}>
+                <br />
+                <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+                <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Offers </i>
+                <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+
+                {
+                    successFun()
+                }
+                <form style={{
+                    backgroundColor: 'white',
+                    padding: '5%',
+                    borderRadius: '13px',
+                    marginTop: '4vh'
+                }}>
+
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="validatedCustomFile" multiple required onChange={(event) => getimage(event)} />
+                        <label class="custom-file-label" for="validatedCustomFile">Choose file... {images[1]}</label>
+                        <div class="invalid-feedback">Example invalid custom file feedback</div>
+                    </div>
+
                     <br />
-                    <i className="fa fa-angle-left" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
-                    <i style={{ marginLeft: '0px', fontSize: '25px' }}   > Offers </i>
-                    <i className="fa fa-angle-right" style={{ marginLeft: '0px', fontSize: '30px' }}></i>
+                    <br />
 
-                    {
-                        successFun()
-                    }
-                    <form style={{
-                        backgroundColor: 'white',
-                        padding: '5%',
-                        borderRadius: '13px',
-                        marginTop: '4vh'
-                    }}>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" multiple onChange={(event) => getimage(event)} />
+
+                    <div className="form-group">
+                        <label for="exampleInputEmail1">Offer Title</label>
+                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setTitle(event.target.value)} />
+                    </div>
+                    <br />
+
+
+                    <div class="form-group">
+                        <label for="validationTextarea">Offer Subtitle</label>
+                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtile(event.target.value)} ></textarea>
+                    </div>
+
+                    <br />
+
+
+                    <div class="row">
+                        <div class="col">
+                            <label >Old Price</label>
+
+                            <input type="text" class="form-control" onChange={(event) => setOldPrice(event.target.value)} />
                         </div>
-
-                        <br />
-
-                        <div className="form-group">
-                            <label for="exampleInputEmail1">Offer Title</label>
-                            <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setTitle(event.target.value)} />
+                        <div class="col">
+                            <label >New Price</label>
+                            <input type="text" class="form-control" onChange={(event) => setNewPrice(event.target.value)} />
                         </div>
-                        <br />
+                    </div>
+                    <br />
 
+                    <div class="form-group">
+                        <label for="validationTextarea"> Expire Date</label>
+                        <input type="date" class="form-control" id="date" name="date" onChange={(event) => setExDate(event.target.value)} />
+                    </div>
 
-                        <div class="form-group">
-                            <label for="validationTextarea">Offer Subtitle</label>
-                            <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtile(event.target.value)} ></textarea>
-                        </div>
-
-                        <br />
-
-
-                        <div class="row">
-                            <div class="col">
-                                <label >Old Price</label>
-
-                                <input type="text" class="form-control" onChange={(event) => setOldPrice(event.target.value)} />
-                            </div>
-                            <div class="col">
-                                <label >New Price</label>
-                                <input type="text" class="form-control" onChange={(event) => setNewPrice(event.target.value)} />
-                            </div>
-                        </div>
-                        <br />
-
-                        <div class="form-group">
-                            <label for="validationTextarea"> Expire Date</label>
-                            <input type="date" class="form-control" id="date" name="date" onChange={(event) => setExDate(event.target.value)} />
-                        </div>
-
-                        <br />
-                        <button type="submit" className="btn btn-primary" onClick={(event) => addNewOffer(event)}>Add new offer</button>
-                    </form>
-
-                </div>
-                <div className="col-4 d-none d-md-block" style={{ backgroundColor: '', height: '97vh', overflow: 'scroll' }}>
-                    {
-                        offer.map((e) => {
-                            return (
-                                <>
-                                    <div className="card" style={{ margin: '10px' }}>
-                                        <h5 className="card-header">{e.title}</h5>
-                                        <div className="card-body">
-                                            <img src={url + e.images[0]} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
-
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <p className="card-text">
-                                                        <p className="card-text">{e.subtitle}</p>
-                                                    </p>
-                                                </div>
-                                            </div>
-
-
-                                            <br />
-
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <p className="card-text">
-                                                        <p className="card-text">Offer Expire Date: <span style={{ color: 'red' }}>{e.exDate.split('T')[0]} </span></p>
-                                                    </p>
-
-                                                </div>
-
-                                                <div class="card-body">
-                                                    <p className="card-text">
-                                                        <p className="card-text">
-                                                            <p className="card-text">Old price: <span style={{ color: 'red' }}>{e.oldPrice} EGP</span> to New Price:<span style={{ color: 'red' }}>{e.newPrice} EGP</span> </p>
-                                                        </p>
-                                                    </p>
-
-                                                </div>
-                                            </div>
-
-                                            <br />
-                                            <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
-                                        </div>
-                                    </div>
-
-                                </>
-                            );
-                        })
-                    }
-
-                </div>
+                    <br />
+                    <button type="submit" className="btn btn-primary" onClick={(event) => addNewOffer(event)}>Add new offer</button>
+                </form>
 
             </div>
+            <div className="col-4 d-none d-md-block" style={{ backgroundColor: '', height: '97vh', overflow: 'scroll' }}>
+                {
+                    offer.map((e) => {
+                        return (
+                            <>
+                                <div className="card" style={{ margin: '10px' }}>
+                                    <h5 className="card-header">{e.title}</h5>
+                                    <div className="card-body">
+                                        <img src={url + e.images[0]} class="card-img-top" style={{ height: '200px', borderRadius: '0%', margin: '10px 0px ' }} />
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p className="card-text">
+                                                    <p className="card-text">{e.subtitle}</p>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        <br />
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p className="card-text">
+                                                    <p className="card-text">Offer Expire Date: <span style={{ color: 'red' }}>{e.exDate.split('T')[0]} </span></p>
+                                                </p>
+
+                                            </div>
+
+                                            <div class="card-body">
+                                                <p className="card-text">
+                                                    <p className="card-text">
+                                                        <p className="card-text">Old price: <span style={{ color: 'red' }}>{e.oldPrice} EGP</span> to New Price:<span style={{ color: 'red' }}>{e.newPrice} EGP</span> </p>
+                                                    </p>
+                                                </p>
+
+                                            </div>
+                                        </div>
+
+                                        <br />
+                                        <button className="btn btn-outline-danger" onClick={(event) => onDelete(event, e._id)}>Delete</button>
+                                    </div>
+                                </div>
+
+                            </>
+                        );
+                    })
+                }
+
+            </div>
+
+        </div>
     );
 }
