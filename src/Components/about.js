@@ -16,6 +16,7 @@ export default function About() {
 
                     // reset form
                     setTitle('')
+
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
@@ -64,13 +65,13 @@ export default function About() {
 
                 <div class="form-group">
                     <label >About</label>
-                    <textarea class="form-control " required style={{ minHeight: '200px' }} onChange={(event) => setTitle(event.target.value)}></textarea>
+                    <textarea class="form-control " required style={{ minHeight: '200px' }} onChange={(event) => setTitle(event.target.value)} value={title}></textarea>
                 </div>
 
 
                 <br />
 
-                <button type="submit" className="btn btn-warning" onClick={(event) => changeAbout(event)}>Update new about</button>
+                <button type="submit" className="btn btn-warning" onClick={(event) => changeAbout(event)} >Update new about</button>
             </form>
         </div>
     );

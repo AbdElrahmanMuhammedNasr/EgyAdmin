@@ -45,6 +45,15 @@ export default function BestOffer() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setOffer([...offer, res.data]);
+                    // reset 
+                    setImages('')
+                    setTitle('')
+                    setSubtile('')
+                    setOldPrice('')
+                    setNewPrice('')
+                    setExDate('')
+
+
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
@@ -136,14 +145,14 @@ export default function BestOffer() {
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Offer Title</label>
-                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setTitle(event.target.value)} />
+                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setTitle(event.target.value)}  value={title}/>
                     </div>
                     <br />
 
 
                     <div class="form-group">
                         <label for="validationTextarea">Offer Subtitle</label>
-                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtile(event.target.value)} ></textarea>
+                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtile(event.target.value)} value={subtitle} ></textarea>
                     </div>
 
                     <br />
@@ -153,18 +162,18 @@ export default function BestOffer() {
                         <div class="col">
                             <label >Old Price</label>
 
-                            <input type="text" class="form-control" onChange={(event) => setOldPrice(event.target.value)} />
+                            <input type="text" class="form-control" onChange={(event) => setOldPrice(event.target.value)} value={oldPrice} />
                         </div>
                         <div class="col">
                             <label >New Price</label>
-                            <input type="text" class="form-control" onChange={(event) => setNewPrice(event.target.value)} />
+                            <input type="text" class="form-control" onChange={(event) => setNewPrice(event.target.value)} value={newPrice} />
                         </div>
                     </div>
                     <br />
 
                     <div class="form-group">
                         <label for="validationTextarea"> Expire Date</label>
-                        <input type="date" class="form-control" id="date" name="date" onChange={(event) => setExDate(event.target.value)} />
+                        <input type="date" class="form-control" id="date" name="date" onChange={(event) => setExDate(event.target.value)} value={exDate}/>
                     </div>
 
                     <br />

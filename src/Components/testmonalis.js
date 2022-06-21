@@ -36,6 +36,11 @@ export default function Testmonials() {
                     setSuccess(true)
                     // const _id = res.data._id;
                     setTestmonial([...testmonial, res.data]);
+                    //reset
+                    setImage('')
+                    setName('')
+                    setSubtitle('')
+
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
@@ -117,7 +122,7 @@ export default function Testmonials() {
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Name</label>
-                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} />
+                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} value={name}/>
                     </div>
                     <br />
 
@@ -125,7 +130,7 @@ export default function Testmonials() {
 
                     <div class="form-group">
                         <label for="validationTextarea">Subtitle</label>
-                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)}></textarea>
+                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)} value={subtitle}></textarea>
                     </div>
 
                     <br />

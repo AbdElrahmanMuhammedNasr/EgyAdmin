@@ -35,6 +35,10 @@ export default function Partner() {
                     setSuccess(true)
                     const _id = res.data._id;
                     setPartner([...partner, { _id, image, name }]);
+
+                    setImage('')
+                    setName('')
+                    
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
@@ -120,7 +124,7 @@ export default function Partner() {
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Name</label>
-                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} />
+                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} value={name}/>
                     </div>
                     <br />
 

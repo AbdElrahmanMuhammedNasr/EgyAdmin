@@ -43,6 +43,12 @@ export default function Projects() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setProject([...project, res.data]);
+
+                    setImages('')
+                    setName('')
+                    setSection('')
+                    setLink('')
+
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
@@ -137,16 +143,17 @@ export default function Projects() {
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Project Name</label>
-                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} />
+                        <input type="text" class="form-control" required  onChange={(event) => setName(event.target.value)} value={name} />
                     </div>
                     <br />
 
                     <div class="form-group ">
                         <label for="inputState">Section</label>
-                        <select id="inputState" class="form-control" onChange={(event) => setSection(event.target.value)} >
+                        <select id="inputState" class="form-control" onChange={(event) => setSection(event.target.value)} value={section}>
                             <option value="null" selected>Choose..</option>
                             <option value="web" >web</option>
-                            <option value="mobile">Mobile</option>
+                            <option value="mobile">mobile</option>
+                            <option value="cctv">cctv</option>
                             <option value="network">network</option>
                         </select>
                     </div>
@@ -158,7 +165,7 @@ export default function Projects() {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">https://example.com/</span>
                         </div>
-                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" onChange={(event) => setLink(event.target.value)} />
+                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" onChange={(event) => setLink(event.target.value)} value={link}/>
                     </div>
 
 

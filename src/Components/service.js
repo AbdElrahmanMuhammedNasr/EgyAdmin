@@ -32,6 +32,10 @@ export default function Services() {
 
 
     const onAddNewService = (event) => {
+        if (image == null || name == null || subtitle == null) {
+            console.log("not add");
+            return;
+        }
         event.preventDefault();
 
         axios.post('service/add-service', { image, name, subtitle })
@@ -39,11 +43,19 @@ export default function Services() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setService([...service, res.data]);
+
+                    setImage(null)
+                    setName('')
+                    setSubtitle('')
+
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
                 }
             })
+
+            console.log("added");
+
     }
     const onDelete = (event, id) => {
         event.preventDefault();
@@ -114,7 +126,7 @@ export default function Services() {
                         successFun()
                     }
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="validatedCustomFile"  required onChange={(event) => getimage(event)} />
+                        <input type="file" class="custom-file-input" id="validatedCustomFile" required onChange={(event) => getimage(event)} />
                         <label class="custom-file-label" for="validatedCustomFile">Choose file... {image}</label>
                         <div class="invalid-feedback">Example invalid custom file feedback</div>
                     </div>
@@ -124,14 +136,14 @@ export default function Services() {
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Service Name</label>
-                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} />
+                        <input type="text" class="form-control" required aria-describedby="emailHelp" onChange={(event) => setName(event.target.value)} value={name} />
                     </div>
                     <br />
 
 
                     <div class="form-group">
                         <label for="validationTextarea">Service subtitle</label>
-                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)}></textarea>
+                        <textarea class="form-control " required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)} value={subtitle}></textarea>
                     </div>
 
                     <br />

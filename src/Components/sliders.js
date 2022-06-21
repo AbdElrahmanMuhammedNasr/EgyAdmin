@@ -40,10 +40,12 @@ export default function Sliders() {
                 if (res.status == 200) {
                     setSuccess(true)
                     setSlider([...slider, newSlider]);
+                    
                     // reset form
-                    setImage(null)
-                    setTitle(null)
-                    setSubtitle(null)
+                    setImage('')
+                    setTitle('')
+                    setSubtitle('')
+
                     setInterval(() => {
                         setSuccess(null)
                     }, 3000)
@@ -140,14 +142,14 @@ export default function Sliders() {
 
                     <div className="form-group">
                         <label for="exampleInputEmail1">Title</label>
-                        <input type="text" class="form-control" onChange={(event) => setTitle(event.target.value)} />
+                        <input type="text" class="form-control" onChange={(event) => setTitle(event.target.value)} value={title}/>
                     </div>
                     <br />
 
 
                     <div class="form-group">
                         <label for="validationTextarea">Subtitle</label>
-                        <textarea class="form-control" required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)}></textarea>
+                        <textarea class="form-control" required style={{ minHeight: '150px', maxHeight: '150px' }} onChange={(event) => setSubtitle(event.target.value)} value={subtitle}></textarea>
                     </div>
 
 
