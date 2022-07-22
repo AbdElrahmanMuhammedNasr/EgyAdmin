@@ -8,6 +8,7 @@ import Projects from './Components/project';
 import Testmonials from './Components/testmonalis';
 import Partner from './Components/partner';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import Section from './Components/section';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/slider' element={<Sliders />} />
             <Route path='/offer' element={<BestOffer />} />
             <Route path='/service' element={<Services />} />
+            <Route path='/section' element={<Section />} />
             <Route path='/project' element={<Projects />} />
             <Route path='/testmonials' element={<Testmonials />} />
             <Route path='/partner' element={<Partner />} />

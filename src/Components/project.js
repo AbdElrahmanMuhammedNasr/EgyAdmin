@@ -26,6 +26,21 @@ export default function Projects() {
 
     // 
 
+    const [validsection, setvalidsection] = React.useState([]);
+
+    //  get sliders
+    useEffect(() => {
+       axios.get('section/get-section')
+           .then(res => {
+               if (res.status == 200) {
+                setvalidsection(res.data);
+               }
+           }).catch(e => {
+               setSuccess(false)
+           })
+
+   }, [])
+
     const [images, setImages] = React.useState([]);
     const [name, setName] = React.useState(null);
     const [section, setSection] = React.useState(null);
@@ -151,10 +166,17 @@ export default function Projects() {
                         <label for="inputState">Section</label>
                         <select id="inputState" class="form-control" onChange={(event) => setSection(event.target.value)} value={section}>
                             <option value="null" selected>Choose..</option>
-                            <option value="web" >web</option>
-                            <option value="mobile">mobile</option>
+                            {
+                                validsection.map((s)=>{
+                                    return(
+                                        <option value={s.name} >{s.name}</option>
+
+                                )
+                                })
+                            }
+                            {/* <option value="mobile">mobile</option>
                             <option value="cctv">cctv</option>
-                            <option value="network">network</option>
+                            <option value="network">network</option> */}
                         </select>
                     </div>
 

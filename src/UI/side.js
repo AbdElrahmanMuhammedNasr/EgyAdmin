@@ -8,6 +8,7 @@ export default function Side() {
         { name: 'About', link: '/about', },
         { name: 'Offer', link: '/offer', },
         { name: 'Services', link: '/service', },
+        { name: 'Section', link: '/section', },
         { name: 'Project', link: '/project', },
         { name: 'Testmonials', link: '/testmonials', },
         { name: 'Partner', link: '/partner', },
